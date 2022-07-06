@@ -9,6 +9,7 @@ image.bin: main.o system_stm32f4xx.o startup_stm32f407vgtx.o morestack.o malloc.
 		lib/libclang_rt.builtins-arm.a \
 		-o image.bin \
 		-mcpu=cortex-m4 -mthumb \
+		-fno-zero-initialized-in-bss \
 		-fuse-ld=lld \
 		-Wl,--gc-sections \
 		-Tlinkerscript.ld
@@ -19,6 +20,7 @@ malloc.o: malloc.c
 		-fsplit-stack -fropi -frwpi \
 		-O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o malloc.o malloc.c
 
 test.o: test.c test.h
@@ -27,6 +29,7 @@ test.o: test.c test.h
 		-fsplit-stack -fropi -frwpi \
 		-O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o test.o test.c
 
 main.o: main.c
@@ -35,6 +38,7 @@ main.o: main.c
 		-fsplit-stack -fropi -frwpi \
 		-O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o main.o main.c
 
 system_stm32f4xx.o: system_stm32f4xx.h system_stm32f4xx.c
@@ -43,24 +47,28 @@ system_stm32f4xx.o: system_stm32f4xx.h system_stm32f4xx.c
 		-fsplit-stack -fropi -frwpi \
 		-O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o system_stm32f4xx.o system_stm32f4xx.c
 
 startup_stm32f407vgtx.o: startup_stm32f407vgtx.s
 	~/opt/llvm/bin/clang \
 		-mfloat-abi=soft -O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o startup_stm32f407vgtx.o startup_stm32f407vgtx.s
 
 morestack.o: morestack.S
 	~/opt/llvm/bin/clang \
 		-mfloat-abi=soft -O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o morestack.o morestack.S
 
 memops.o: memops.S
 	~/opt/llvm/bin/clang \
 		-mfloat-abi=soft -O2 -nostdlib --target=armv7em-none-eabi \
 		-mcpu=cortex-m4 \
+		-fno-zero-initialized-in-bss \
 		-c -o memops.o memops.S
 
 clean:
